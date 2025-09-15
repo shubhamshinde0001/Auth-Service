@@ -11,6 +11,7 @@ from authapp.models import CustomUser
 
 
 class CustomerRegisterView(APIView):
+    permission_classes = []
     def post(self, request):
         serializer = CustomerRegisterSerializer(data=request.data)
         if serializer.is_valid():
@@ -23,6 +24,7 @@ class CustomerRegisterView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ShopOwnerRegisterView(APIView):
+    permission_classes = []
     def post(self, request):
         serializer = ShopOwnerRegisterSerializer(data=request.data)
         if serializer.is_valid():
