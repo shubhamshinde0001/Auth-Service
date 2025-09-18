@@ -133,17 +133,16 @@ REST_FRAMEWORK = {
     ),
 }
 
+
+
+
 from datetime import timedelta
 
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'ROTATE_REFRESH_TOKENS': True,
-    'BLACKLIST_AFTER_ROTATION': True,
-    'AUTH_HEADER_TYPES': ('Bearer',),
-    'USER_ID_FIELD': 'id',
-    'USER_ID_CLAIM': 'user_id',
-}
+JWT_SECRET_KEY = SECRET_KEY   # you can also load from env var
+JWT_ALGORITHM = "HS256"
+JWT_ACCESS_TOKEN_EXPIRE_MINUTES = 15
+JWT_REFRESH_TOKEN_EXPIRE_DAYS = 7
+
 
 AUTH_USER_MODEL = 'authapp.CustomUser'
 '''

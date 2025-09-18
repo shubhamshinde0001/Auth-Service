@@ -36,24 +36,34 @@ class ShopOwnerRegisterView(APIView):
             }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.contrib.auth import authenticate
+from .jwt_utils import create_access_token, create_refresh_token
+
 class LoginView(APIView):
+    permission_classes = []
+    authentication_classes = []
+
     def post(self, request):
-        serializer = LoginSerializer(data=request.data)
-        if serializer.is_valid():
-            user = authenticate(
-                username=serializer.validated_data['username'],
-                password=serializer.validated_data['password']
-            )
-            if user:
-                refresh = RefreshToken.for_user(user)
-                return Response({
-                    'refresh': str(refresh),
-                    'access': str(refresh.access_token),
-                    'user_id': user.id,
-                    'role': user.role,
-                })
+        username = request.data.get("username")
+        password = request.data.get("password")
+
+        user = authenticate(username=username, password=password)
+        if not user:
             return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        payload = {"user_id": user.id, "role": user.role}
+        access = create_access_token(payload)
+        refresh = create_refresh_token(payload)
+
+        return Response({
+            "access": access,
+            "refresh": refresh,
+            "user_id": user.id,
+            "role": user.role
+        })
 
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
@@ -74,18 +84,25 @@ class UserInfoView(APIView):
         serializer = UserInfoSerializer(request.user)
         return Response(serializer.data)
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .jwt_utils import verify_access_token
+
 class TokenVerifyView(APIView):
+    permission_classes = []
+    authentication_classes = []
+
     def post(self, request):
-        # For other microservices to verify tokens via API gateway
-        token = request.data.get('token')
-        try:
-            access_token = RefreshToken(token)
-            user_id = access_token['user_id']
-            user = CustomUser.objects.get(id=user_id)
-            return Response({
-                'user_id': user.id,
-                'role': user.role,
-                'is_active': user.is_active
-            })
-        except Exception:
+        token = request.data.get("token")
+        if not token:
+            return Response({"error": "Token is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        payload = verify_access_token(token)
+        if not payload:
             return Response({"error": "Invalid or expired token"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        return Response({
+            "user_id": payload["user_id"],
+            "role": payload["role"]
+        })
