@@ -11,19 +11,19 @@ Exposes RESTful endpoints for authentication and user info, with role-based acce
 pip install django djangorestframework djangorestframework-simplejwt psycopg2-binary
 
 # 2. Project structure:
-# auth_service/
-# ├── auth_service/
-# │   ├── __init__.py
-# │   ├── settings.py
-# │   ├── urls.py
-# ├── authapp/
-# │   ├── __init__.py
-# │   ├── models.py
-# │   ├── serializers.py
-# │   ├── views.py
-# │   ├── urls.py
-# │   ├── permissions.py
-# └── manage.py
+ auth_service/
+ ├── auth_service/
+ │   ├── __init__.py
+ │   ├── settings.py
+ │   ├── urls.py
+ ├── authapp/
+ │   ├── __init__.py
+ │   ├── models.py
+ │   ├── serializers.py
+ │   ├── views.py
+ │   ├── urls.py
+ │   ├── permissions.py
+ └── manage.py
 
 # 3. Update settings.py
 INSTALLED_APPS = [
@@ -295,32 +295,32 @@ psycopg2-binary==2.9.9
 gunicorn==22.0.0
 
 # 12. Run migrations (in terminal):
-# python manage.py makemigrations
-# python manage.py migrate
+python manage.py makemigrations
+python manage.py migrate
 
 # 13. Run the server (for development):
-# python manage.py runserver
+python manage.py runserver
 
 # API Gateway Integration:
-# - Route requests to /api/auth/* to this service (e.g., http://auth-service:8000/api/auth/).
-# - Other microservices (product, order, etc.) call /api/auth/token/verify/ to validate tokens.
-# - Customer website (e.g., customer.example.com) and shop owner website (e.g., shopowner.example.com)
-#   send auth requests via the API gateway.
+- Route requests to /api/auth/* to this service (e.g., http://auth-service:8000/api/auth/).
+- Other microservices (product, order, etc.) call /api/auth/token/verify/ to validate tokens.
+- Customer website (e.g., customer.example.com) and shop owner website (e.g., shopowner.example.com)
+  send auth requests via the API gateway.
 
 # Endpoints (accessed via API gateway, e.g., /api/auth/register/customer/):
-# - POST /api/auth/register/customer/
+- POST /api/auth/register/customer/
    Body: {"username": "customer1", "email": "cust@example.com", "password": "pass123", "password2": "pass123", "phone_number": "1234567890", "address": "123 Street", "latitude": 37.7749, "longitude": -122.4194}
-# - POST /api/auth/register/shop_owner/
+- POST /api/auth/register/shop_owner/
    Body: {"username": "owner1", "email": "owner@example.com", "password": "pass123", "password2": "pass123", "phone_number": "0987654321", "address": "456 Avenue"}
-# - POST /api/auth/login/
+- POST /api/auth/login/
    Body: {"username": "customer1", "password": "pass123"}
-# - POST /api/auth/logout/
+- POST /api/auth/logout/
    Body: {"refresh_token": "<refresh_token>"}
-# - POST /api/auth/token/refresh/
+- POST /api/auth/token/refresh/
    Body: {"refresh": "<refresh_token>"}
-# - GET /api/auth/user/info/
+- GET /api/auth/user/info/
    Header: Authorization: Bearer <access_token>
-# - POST /api/auth/token/verify/
+- POST /api/auth/token/verify/
    Body: {"token": "<access_token>"}
 
 # Notes:
