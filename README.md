@@ -2,13 +2,13 @@
 
 # Authentication Microservice for Ecommerce Platform
 
-# This is a standalone Django-based authentication microservice using DRF and SimpleJWT.
-# It handles user registration, login, logout, and token validation for customers and shop owners.
-# Designed to integrate with an API gateway and other microservices (e.g., product, order, inventory).
-# Exposes RESTful endpoints for authentication and user info, with role-based access control.
+This is a standalone Django-based authentication microservice using DRF and SimpleJWT.
+It handles user registration, login, logout, and token validation for customers and shop owners.
+Designed to integrate with an API gateway and other microservices (e.g., product, order, inventory).
+Exposes RESTful endpoints for authentication and user info, with role-based access control.
 
 # 1. Install required packages (run in terminal):
-# pip install django djangorestframework djangorestframework-simplejwt psycopg2-binary
+pip install django djangorestframework djangorestframework-simplejwt psycopg2-binary
 
 # 2. Project structure:
 # auth_service/
