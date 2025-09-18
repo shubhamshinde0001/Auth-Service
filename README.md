@@ -309,23 +309,23 @@ gunicorn==22.0.0
 
 # Endpoints (accessed via API gateway, e.g., /api/auth/register/customer/):
 # - POST /api/auth/register/customer/
-#   Body: {"username": "customer1", "email": "cust@example.com", "password": "pass123", "password2": "pass123", "phone_number": "1234567890", "address": "123 Street", "latitude": 37.7749, "longitude": -122.4194}
+   Body: {"username": "customer1", "email": "cust@example.com", "password": "pass123", "password2": "pass123", "phone_number": "1234567890", "address": "123 Street", "latitude": 37.7749, "longitude": -122.4194}
 # - POST /api/auth/register/shop_owner/
-#   Body: {"username": "owner1", "email": "owner@example.com", "password": "pass123", "password2": "pass123", "phone_number": "0987654321", "address": "456 Avenue"}
+   Body: {"username": "owner1", "email": "owner@example.com", "password": "pass123", "password2": "pass123", "phone_number": "0987654321", "address": "456 Avenue"}
 # - POST /api/auth/login/
-#   Body: {"username": "customer1", "password": "pass123"}
+   Body: {"username": "customer1", "password": "pass123"}
 # - POST /api/auth/logout/
-#   Body: {"refresh_token": "<refresh_token>"}
+   Body: {"refresh_token": "<refresh_token>"}
 # - POST /api/auth/token/refresh/
-#   Body: {"refresh": "<refresh_token>"}
+   Body: {"refresh": "<refresh_token>"}
 # - GET /api/auth/user/info/
-#   Header: Authorization: Bearer <access_token>
+   Header: Authorization: Bearer <access_token>
 # - POST /api/auth/token/verify/
-#   Body: {"token": "<access_token>"}
+   Body: {"token": "<access_token>"}
 
 # Notes:
-# - Shop creation: Handled by a separate shop service. After shop owner registration, send a message (e.g., via Kafka/RabbitMQ) to the shop service to create a shop profile.
-# - Other microservices: Product exploration, AI search, inventory, and delivery partnerships are handled by separate services, which use /api/auth/token/verify/ to check user roles and permissions.
-# - API Gateway: Configure to forward auth requests to this service and validate tokens for other services.
-# - Scalability: Deploy with Docker, use a load balancer, and scale horizontally. Store tokens in Redis for blacklisting if needed.
-# - Security: Use HTTPS, rate limiting in the API gateway, and secure JWT signing keys.
+ - Shop creation: Handled by a separate shop service. After shop owner registration, send a message (e.g., via Kafka/RabbitMQ) to the shop service to create a shop profile.
+ - Other microservices: Product exploration, AI search, inventory, and delivery partnerships are handled by separate services, which use /api/auth/token/verify/ to check user roles and permissions.
+ - API Gateway: Configure to forward auth requests to this service and validate tokens for other services.
+ - Scalability: Deploy with Docker, use a load balancer, and scale horizontally. Store tokens in Redis for blacklisting if needed.
+ - Security: Use HTTPS, rate limiting in the API gateway, and secure JWT signing keys.
